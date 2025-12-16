@@ -1,0 +1,13 @@
+apiVersion: virtualization.openshift.io/v1alpha1
+kind: VirtualMachineConfig
+metadata:
+  name: standard-linux-template
+spec:
+  cpu: 2
+  memory: 4Gi
+  diskImage: quay.io/containerdisks/ubuntu
+  cloudInit:
+    userData: |
+      #cloud-config
+      password: passw0rd
+      chpasswd: {expire: False }
