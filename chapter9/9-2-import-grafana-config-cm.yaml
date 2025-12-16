@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: kubevirt-grafana-dashboards
+  namespace: openshift-config
+data:
+  kubevirt-vmi-overview.json: |
+    { ... JSON content of the dashboard ... }

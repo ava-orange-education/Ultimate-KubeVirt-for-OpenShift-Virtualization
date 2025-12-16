@@ -1,0 +1,35 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: vm-health-rules
+  namespace: openshift-monitoring
+spec:
+  groups:
+    - name: virt-vm.rules
+      rules:
+        - alert: VMStuckInPending
+          expr: kubevirt_vmi_phase_count{phase="Pending"} > 3
+          for: 5m
+          labels:
+            severity: warning
+          annotations:
+            summary: "Multiple Virtual Machines are stuck in Pending state."
+            description: "There are more than 3 VMIs in 'Pending' state for over 5 minutes. Check if nodes have enough CPU/memory and if required volumes are available."
+        - alert: VMHighCPUUsage
+          expr: avg by (namespace, name) (rate(container_cpu_usage_
+          seconds_total{container="virt-launcher"}[5m])) > 0.8
+          for: 2m
+          labels:
+            severity: critical
+          annotations:
+            summary: "High CPU usage detected for virtual machines"
+            description: "One or more VMs are using more than 80% CPU consistently for over 2 minutes."
+        - alert: VMDiskHighLatency
+          expr: rate(kubevirt_vmi_storage_read_latency_seconds_sum[5m]) /
+          rate(kubevirt_vmi_storage_read_latency_seconds_count[5m]) > 0.05
+          for: 5m
+          labels:
+            severity: warning
+          annotations:
+            summary: "VM disk read latency exceeds 50ms"
+            description: "Check PVC performance or node storage I/O saturation."

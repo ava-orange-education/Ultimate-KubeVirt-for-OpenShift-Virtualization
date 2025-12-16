@@ -1,0 +1,19 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: virt-controller
+  labels:
+    release: prometheus-k8s
+spec:
+  selector:
+    matchLabels:
+      kubevirt.io: virt-controller
+  endpoints:
+    - port: metrics
+      scheme: https
+      interval: 30s
+      tlsConfig:
+        insecureSkipVerify: true
+  namespaceSelector:
+    matchNames:
+      - kubevirt
