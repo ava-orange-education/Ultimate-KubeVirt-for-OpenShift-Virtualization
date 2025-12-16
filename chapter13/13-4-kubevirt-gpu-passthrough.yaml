@@ -1,0 +1,20 @@
+apiVersion: kubevirt.io/v1
+kind: VirtualMachineInstance
+metadata:
+  name: vmi-gpu-passthrough-nvidia
+spec:
+  domain:
+    resources:
+      requests:
+        memory: "8Gi"
+      limits:
+        memory: "8Gi"
+      cpu:
+        cores: 4
+      devices:
+        gpus:
+          - name: "gpu1"
+            # Matches resourceName in KubeVirt CR
+            deviceName: "nvidia.com/GP104GL_TESLA_P4"
+...
+...
