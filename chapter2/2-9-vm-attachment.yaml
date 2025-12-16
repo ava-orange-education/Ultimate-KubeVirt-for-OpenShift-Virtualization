@@ -1,0 +1,20 @@
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  name: test-vm-multus
+spec:
+  template:
+    spec:
+      domain:
+        devices:
+          interfaces:
+          - name: default
+            masquerade: {}
+          - name: macvlan-net
+            bridge: {}
+      networks:
+        - name: default
+          pod: {}
+        - name: macvlan-net
+          multus:
+            networkName: macvlan-net

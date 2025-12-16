@@ -1,0 +1,18 @@
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  name: example-vm
+spec:
+  running: true
+  template:
+    spec:
+      domain:
+        cpu:
+          cores: 4
+        resources:
+          requests:
+            memory: 8Gi
+            cpu: 4
+          limits:
+            memory: 16Gi
+            cpu: 8

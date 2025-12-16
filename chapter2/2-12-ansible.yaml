@@ -1,0 +1,7 @@
+- name: Install OpenShift Cluster
+  hosts: masters
+  tasks:
+    - name: Install OpenShift CLI
+      yum:
+        name: openshift-client
+        state: present

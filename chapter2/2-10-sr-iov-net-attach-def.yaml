@@ -1,0 +1,11 @@
+apiVersion: k8s.cni.cncf.io/v1
+kind: NetworkAttachmentDefinition
+metadata:
+  name: sriov-net
+spec:
+  config: '{
+    "cniVersion": "0.3.1",
+    "type": "sriov",
+    "deviceID": "0000:03:00.0",
+    "ipam": { "type": "dhcp" }
+  }'

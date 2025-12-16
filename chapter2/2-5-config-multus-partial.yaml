@@ -1,0 +1,19 @@
+# partial example - kept short for brevity
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+spec:
+  template:
+    spec:
+      domain:
+        devices:
+          interfaces:
+            - name: default
+              masquerade: {}
+            - name: bridge-net
+              bridge: {}
+      networks:
+        - name: default
+          pod: {} # Stock pod network
+        - name: bridge-net
+          multus: # Secondary multus network
+            networkName: linux-bridge-net-ipam #ref to NAD name

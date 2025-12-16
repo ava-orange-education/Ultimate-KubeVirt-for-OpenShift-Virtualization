@@ -1,0 +1,16 @@
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  name: test-vm
+spec:
+  running: false
+  template:
+    spec:
+      domain:
+        devices:
+          interfaces:
+            - name: default
+              masquerade: {}
+      networks:
+        - name: default
+          pod: {}
