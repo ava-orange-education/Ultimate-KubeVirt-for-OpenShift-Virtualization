@@ -1,0 +1,25 @@
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  name: windows-vm
+spec:
+  running: false
+  template:
+    metadata:
+      labels:
+        kubevirt.io/domain: windows-vm
+    spec:
+      domain:
+        devices:
+          disks:
+            - name: rootdisk
+              disk:
+                bus: virtio
+        resources:
+          requests:
+            memory: 8Gi
+            cpu: "4"
+      volumes:
+        - name: rootdisk
+          containerDisk:
+            image: quay.io/containerdisks/windows10:latest
