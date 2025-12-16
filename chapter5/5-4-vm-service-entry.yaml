@@ -1,0 +1,15 @@
+apiVersion: networking.istio.io/v1beta1
+kind: ServiceEntry
+metadata:
+  name: vm-external-service
+spec:
+  hosts:
+    - vm-app.internal
+  addresses:
+    - 10.10.10.100/32
+  location: MESH_EXTERNAL
+  ports:
+    - number: 443
+      name: https
+      protocol: HTTPS
+  resolution: NONE

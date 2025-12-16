@@ -1,0 +1,24 @@
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  name: vm-multus-example
+  namespace: default
+spec:
+  template:
+    metadata:
+      annotations:
+        k8s.v1.cni.cncf.io/networks: '[{"name": "custom-bridge-net"}]'
+    spec:
+      domain:
+        devices:
+          interfaces:
+            - name: default
+              masquerade: {}
+            - name: custom-bridge-net
+              bridge: {}
+      networks:
+        - name: default
+          pod: {}
+        - name: custom-bridge-net
+          multus:
+            networkName: custom-bridge-net
