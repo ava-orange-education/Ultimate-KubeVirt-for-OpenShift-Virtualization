@@ -1,0 +1,23 @@
+apiVersion: kubevirt.io/v1
+kind: VirtualMachineTemplate
+metadata:
+  name: my-vm-template
+spec:
+  template:
+    metadata:
+      labels:
+        app: my-app
+  spec:
+    domain:
+      resources:
+        requests:
+          memory: 1Gi
+    devices:
+      disks:
+      - name: containerdisk
+        disk:
+          bus: virtio
+    volumes:
+      - name: containerdisk
+        containerDisk:
+          image: 'fedora:latest'

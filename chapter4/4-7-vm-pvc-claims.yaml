@@ -1,0 +1,18 @@
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+spec:
+  ...
+  template:
+    spec:
+      domain:
+        devices:
+          disks:
+          - name: mypvcdisk
+            disk:
+              bus: virtio
+            volumeName: mypvc
+      volumes:
+        - name: mypvc
+          persistentVolumeClaim:
+            claimName: myclaim
+  ...

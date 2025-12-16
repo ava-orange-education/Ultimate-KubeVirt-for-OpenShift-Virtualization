@@ -1,0 +1,40 @@
+apiVersion: kubevirt.io/v1
+kind: VirtualMachineInstanceReplicaSet
+metadata:
+  name: my-vmirs
+spec:
+  replicas: 3 # Desired number of replicas
+  selector:
+    matchLabels:
+    app: my-vm
+  template:
+    metadata:
+      labels:
+        app: my-vm
+    spec:
+      domain:
+        devices:
+        disks:
+        - name: containerdisk
+        disk:
+        bus: virtio
+        - name: cloudinitdisk
+        disk:
+        bus: virtio
+        resources:
+        requests:
+        memory: 1Gi
+      volumes:
+        - name: containerdisk
+          containerDisk:
+            image: quay.io/kubevirt/cirros-container-disk-demo
+        - name: cloudinitdisk
+          cloudInitNoCloud:
+            userData: |
+              #cloud-config
+              users:
+                - name: cirros
+                  groups: sudo
+                  shell: /bin/bash
+                  sudo: ['ALL=(ALL) NOPASSWD:ALL']
+      terminationGracePeriodSeconds: 0

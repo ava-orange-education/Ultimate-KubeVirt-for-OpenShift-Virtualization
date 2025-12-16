@@ -1,0 +1,41 @@
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  name: ubuntu-golden-image
+  namespace: default # Adjust namespace as needed
+spec:
+  running: false # Start manually when needed
+  template:
+    metadata:
+      labels:
+        kubevirt.io/vm: ubuntu-golden-image
+    spec:
+      domain:
+        devices:
+          disks:
+            - name: rootdisk
+              disk:
+                bus: virtio
+        resources:
+          requests:
+            memory: 2Gi
+      volumes:
+        - name: rootdisk
+          dataVolume:
+            name: ubuntu-golden-dv # DataVolume to be created by CDI
+  dataVolumeTemplates:
+    - metadata:
+        name: ubuntu-golden-dv
+      spec:
+        source:
+          http:
+            # Replace with desired Ubuntu version.
+            url: "https://cloud-images.ubuntu.com/releases/jammy/release/ubuntu-22.04-server-cloudimg-amd64.img"
+        pvc:
+          accessModes:
+            - ReadWriteOnce
+        resources:
+          requests:
+            storage: 20Gi # Adjust storage size as needed
+         # Replace with your storage class
+        storageClassName: "your-storage-class"

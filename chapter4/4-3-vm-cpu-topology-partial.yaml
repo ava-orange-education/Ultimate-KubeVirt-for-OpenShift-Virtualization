@@ -1,0 +1,16 @@
+apiVersion: instancetype.kubevirt.io/v1beta1
+kind: VirtualMachinePreference
+metadata:
+  name: example-preference-cpu-topology
+spec:
+  cpu:
+  preferredCPUTopology: cores
+
+---
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+spec:
+  ...
+  preference:
+    name: example-preference-cpu-topology
+  ...

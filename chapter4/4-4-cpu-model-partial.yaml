@@ -1,0 +1,10 @@
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+spec:
+  ...
+    template:
+      spec:
+        domain:
+          cpu:
+            model: Conroe
+  ...
