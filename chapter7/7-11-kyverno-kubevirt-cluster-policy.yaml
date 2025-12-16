@@ -1,0 +1,24 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: enforce-trusted-vm-images
+spec:
+  validationFailureAction: Enforce
+  rules:
+    - name: verify-vm-image-repo
+        match:
+          resources:
+            kinds:
+              - VirtualMachine
+      validate:
+        message: "Only images from trusted registry are allowed."
+        pattern:
+          spec:
+            template:
+              spec:
+                domain:
+                  devices:
+                    disks:
+                      - name: rootdisk
+                        containerDisk:
+                          image: "trusted-registry/*"

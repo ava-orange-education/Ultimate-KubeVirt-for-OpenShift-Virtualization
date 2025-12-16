@@ -1,0 +1,23 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: enforce-vm-resource-limits
+spec:
+  validationFailureAction: Enforce
+  rules:
+    - name: limit-vm-resources
+      match:
+        resources:
+          kinds:
+            - VirtualMachine
+    validate:
+      message: "VM resource requests must not exceed limits."
+      pattern:
+        spec:
+          template:
+            spec:
+              domain:
+                resources:
+                  requests:
+                    cpu: "<=2"
+                    memory: "<=4Gi"

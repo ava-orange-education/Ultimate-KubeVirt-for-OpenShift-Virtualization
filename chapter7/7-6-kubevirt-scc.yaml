@@ -1,0 +1,15 @@
+apiVersion: security.openshift.io/v1
+kind: SecurityContextConstraints
+metadata:
+  name: kubevirt-scc
+allowPrivilegedContainer: false
+runAsUser:
+  type: MustRunAsRange
+  uidRangeMin: 1000
+  uidRangeMax: 2000
+seLinuxContext:
+  type: MustRunAs
+fsGroup:
+  type: MustRunAs
+users:
+  - system:serviceaccount:kubevirt:kubevirt-controller

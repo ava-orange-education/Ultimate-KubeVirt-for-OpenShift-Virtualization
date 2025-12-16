@@ -1,0 +1,19 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: enforce-network-policies
+spec:
+  validationFailureAction: Enforce
+  rules:
+    - name: require-network-policy
+      match:
+        resources:
+        kinds:
+          - Pod
+      validate:
+        message: "All pods must have a NetworkPolicy."
+        deny:
+          conditions:
+            - key: "{{request.object.metadata.namespace}}"
+              operator: DoesNotHave
+              value: networkPolicies
