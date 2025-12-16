@@ -1,0 +1,21 @@
+apiVersion: clone.kubevirt.io/v1beta1
+kind: VirtualMachineClone
+metadata:
+  name: clone-static-mac-and-cni-ip
+spec:
+  source:
+    kind: VirtualMachine
+    apiGroup: kubevirt.io
+    name: dynamic-network-vm
+  target:
+    kind: VirtualMachine
+    apiGroup: kubevirt.io
+    name: fixed-identity-appliance
+    patches:
+    # Example: Add Kube-OVN annotation for static IP on the
+    # 'default' interface (eth0 in pod)
+    # This annotation is hypothetical; actual annotation may vary
+    - op: add
+    # '~1' is JSON Pointer for '/'
+    path: /spec/template/metadata/annotations/kubeovn.io~1ip_address
+    value: "default:192.168.1.100" # Format depends on CNI

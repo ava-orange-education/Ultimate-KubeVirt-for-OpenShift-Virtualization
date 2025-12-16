@@ -1,0 +1,25 @@
+apiVersion: cdi.kubevirt.io/v1beta1
+kind: DataVolume
+metadata:
+  name: cloned-fedora-dv
+  # Namespace where the new cloned PVC will be created
+  namespace: target-namespace
+spec:
+  source:
+    pvc:
+    namespace: "source-namespace" # Namespace of the source
+    PVC
+    name: "golden-fedora-pvc" # Name of the source PVC to
+    clone
+  pvc:
+    accessModes:
+      - ReadWriteOnce
+    resources:
+      requests:
+        storage: 10Gi # Must be the same size or larger than the source PVC
+
+        # For smart/CSI cloning, usually must match source PVC's StorageClass
+        # storageClassName: "your-storage-class"
+
+        # Or Block, usually must match source PVC's volumeMode for smart/CSI cloning
+        # volumeMode: Filesystem

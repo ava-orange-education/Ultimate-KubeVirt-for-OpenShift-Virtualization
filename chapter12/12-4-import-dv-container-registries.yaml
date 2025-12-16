@@ -1,0 +1,25 @@
+apiVersion: cdi.kubevirt.io/v1beta1
+kind: DataVolume
+metadata:
+  name: containerdisk-dv
+spec:
+  source:
+    registry:
+      # The URL should specify the full image path, including the tag or digest.
+      # The 'docker://' prefix is common, but check CDI documentation for exact format.
+      url: "docker://quay.io/kubevirt/fedora-cloud-container-disk-demo:latest"
+
+      # Optional: forprivate registries
+      # secretRef: "my-private-registry-secret"
+
+      # Optional: for registries with custom/self-signed CAs
+      # certConfigMap: "my-registry-custom-ca"
+      # pullMethod: "pod" # Default. Alternative is "node" (less common).
+  pvc:
+    accessModes:
+      - ReadWriteOnce
+    resources:
+      requests:
+        storage: 10Gi
+    # Optional
+    # storageClassName: "your-storage-class"

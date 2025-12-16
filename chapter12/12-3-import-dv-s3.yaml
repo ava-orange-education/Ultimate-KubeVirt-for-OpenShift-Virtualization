@@ -1,0 +1,32 @@
+apiVersion: cdi.kubevirt.io/v1beta1
+kind: DataVolume
+metadata:
+  name: image-dv-s3
+  namespace: default
+spec:
+  source:
+    s3:
+      # The URL should be the full path to the object, including the S3 endpoint, bucket, and object key.
+      # Example for AWS S3: "s3://s3.amazonaws.com/my-bucket/images/my-image.qcow2"
+
+      # Example for MinIO (if not using TLS): "http://minio-service.minio-ns.svc:9000/my-bucket/images/my-image.qcow2"
+
+      # Example for MinIO (using TLS): "https://minio-service.minio-ns.svc:9000/my-bucket/images/my-image.qcow2"
+      url: "s3://<your-s3-endpoint-and-bucket>/<path/to/image.qcow2>"
+
+      # References the Secret defined earlier
+      secretRef: "my-s3-secret"
+      
+      # Optional: for custom CA certificate for the S3 endpoint
+      # certConfigMap: "s3-ca-bundle"
+
+      # Optional: specify the S3 region if necessary
+      # region: "us-east-1"
+  pvc:
+    accessModes:
+      - ReadWriteOnce
+    resources:
+      requests:
+        storage: 20Gi
+    # Optional
+    # storageClassName: "your-s3-optimized-storage-class"

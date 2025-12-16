@@ -1,0 +1,29 @@
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  name: my-pinned-vm
+spec:
+  runStrategy: Always
+  dataVolumeTemplates:
+    - metadata:
+        name: rootdisk-dv
+      spec:
+        source:
+          pvc:
+            namespace: golden-image-ns
+            # Direct reference to a versioned PVC
+            name: my-os-image-v1.2.3-stable
+        pvc:
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: 30Gi
+  template:
+    spec:
+      domain:
+        #... VM domain spec...
+      volumes:
+        - name: rootdisk
+          dataVolume:
+            name: rootdisk-dv

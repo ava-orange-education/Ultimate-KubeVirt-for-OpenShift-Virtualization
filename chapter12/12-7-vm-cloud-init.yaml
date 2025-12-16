@@ -1,0 +1,49 @@
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  name: vm-with-cloudinit-example
+spec:
+  running: false # Set to true to start the VM automatically
+  template:
+    metadata:
+      labels:
+        kubevirt.io/domain: vm-with-cloudinit-example
+    spec:
+      domain:
+        cpu:
+          cores: 1
+        resources:
+          requests:
+            memory: 1Gi
+        devices:
+          disks:
+            - name: containerdisk # An example OS disk
+              disk:
+                bus: virtio
+            - name: cloudinitdisk # The cloud-init disk
+              disk:
+                bus: virtio
+          interfaces: # Default pod network interface
+            - name: default
+              masquerade: {}
+      networks: # Default pod network
+        - name: default
+          pod: {}
+      volumes:
+        - name: containerdisk # Define the OS disk source
+          containerDisk:
+            # Example image
+            image: kubevirt/cirros-container-disk-demo:latest
+        - name: cloudinitdisk # Define the cloud-init volume
+          cloudInitNoCloud:
+            userData: | # You can put your cloud-config data here
+              #cloud-config
+              hostname: my-custom-vm
+              users:
+                - name: myuser
+                  ssh_authorized_keys:
+                    - ssh-rsa <your public key here user@example.com>
+                  # grant full sudo access without a password
+                  sudo: ALL=(ALL) NOPASSWD:ALL
+              runcmd:
+              - [touch, /tmp/cloud-init-was-here.txt]
