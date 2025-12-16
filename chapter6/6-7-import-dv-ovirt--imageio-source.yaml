@@ -1,0 +1,20 @@
+apiVersion: cdi.kubevirt.io/v1beta1
+kind: DataVolume
+metadata:
+  name: ovirt-vm-disk
+  namespace: default # Specify your desired namespace if not default
+spec:
+  pvc:
+    accessModes:
+      - ReadWriteOnce
+    resources:
+      requests:
+        storage: 50Gi # Adjust based on the source VM's disk size
+  source:
+    imageio:
+      url: "https://your-ovirt-server.com/ovirt-engine/api"
+      credentialsSecret:
+        name: ovirt-credentials
+      vmName: "my-ovirt-vm"
+      diskName: "disk/0" # Name of the disk within the oVirt VM
+  contentType: kubevirt # Recommended for VM disk images

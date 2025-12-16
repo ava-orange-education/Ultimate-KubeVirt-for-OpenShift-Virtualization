@@ -1,0 +1,15 @@
+apiVersion: cdi.kubevirt.io/v1beta1
+kind: DataVolume
+metadata:
+  name: empty-vm-disk
+  namespace: default # Specify your desired namespace if not default
+spec:
+  pvc:
+    accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+    storage: 100Gi # Specify the desired size of the empty disk
+  source:
+    blank: {}
+  contentType: kubevirt # Required for creating a KubeVirt VM disk

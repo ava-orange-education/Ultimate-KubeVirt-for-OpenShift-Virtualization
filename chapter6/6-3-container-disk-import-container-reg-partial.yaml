@@ -1,0 +1,13 @@
+...
+spec:
+  contentType: kubevirt
+  source:
+    registry:
+    image: "docker.io/kubevirt/fedora-cloud-container-disk-demo:latest"
+    # optional:
+    # imagePullSecretRef:
+    #   name: my-registry-secret # Secret for registry authentication
+    # tlsClientConfig:
+    # Set to true to skip TLS certificate verification (not recommended for production)
+    #   insecureSkipVerify: false
+...

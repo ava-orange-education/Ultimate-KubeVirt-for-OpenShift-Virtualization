@@ -1,0 +1,27 @@
+apiVersion: cdi.kubevirt.io/v1beta1
+kind: DataVolume
+metadata:
+  name: vmware-vm-disk
+  namespace: default # Specify your desired namespace if not default
+spec:
+  pvc:
+    accessModes:
+      - ReadWriteOnce
+  resources:
+    requests:
+      storage: 50Gi # Adjust based on the source VMDK size
+  source:
+    vddk:
+      url: "https://your-vcenter.example.com/sdk"
+      credentialsSecret:
+        name: vcenter-credentials
+      vmName: "MyVMwareVM"
+      diskName: "Hard disk 1" # Name of the virtual disk in VMware
+      # Optional: UUID of the VM
+      uuid: "503e170c-3a93-c797-a1c7-4b2b0b1f0000"
+      # Optional: vCenter certificate thumbprint
+      thumbprint: "AA:BB:CC:DD:EE:FF:00:11:22:33:44:55:66:77:88:99:AA:BB:CC:DD"
+      # insecureSkipVerify: true # Not recommended for production
+      # Replace with your VDDK init image
+      vddkInitImage: "registry.example.com/path/to/vddk-init:latest"
+  contentType: kubevirt # Recommended for VM disk images

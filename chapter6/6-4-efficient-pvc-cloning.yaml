@@ -1,0 +1,7 @@
+...
+spec:
+  source:
+    pvc:
+    name: existing-vm-disk-pvc
+    # Specify the namespace if the source PVC is in a different namespace
+    namespace: default

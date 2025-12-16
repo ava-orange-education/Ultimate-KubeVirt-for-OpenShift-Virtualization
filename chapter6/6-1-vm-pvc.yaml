@@ -1,0 +1,31 @@
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  name: my-vm-template
+spec:
+  template:
+    metadata:
+      labels:
+      app: my-vm
+    spec:
+      domain:
+        devices:
+          disks:
+            - name: rootdisk
+              disk:
+                bus: virtio
+            - name: datadisk
+              disk:
+                bus: virtio
+              volumeName: my-data-volume
+          resources:
+            requests:
+              memory: 2Gi
+              cpu: "2"
+      volumes:
+        - name: rootdisk
+          persistentVolumeClaim:
+            claimName: my-root-pvc
+        - name: my-data-volume
+          persistentVolumeClaim:
+            claimName: my-data-pvc

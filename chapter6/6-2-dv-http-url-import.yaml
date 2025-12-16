@@ -1,0 +1,22 @@
+apiVersion: cdi.kubevirt.io/v1beta1
+kind: DataVolume
+metadata:
+  name: ubuntu-http-import
+  namespace: default # Specify your desired namespace if not default
+spec:
+  pvc:
+    accessModes:
+      - ReadWriteOnce
+    resources:
+      requests:
+        storage: 20Gi # Adjust the size based on the image
+  source:
+    http:
+      url: "http://cloud-images.ubuntu.com/releases/jammy/release/ubuntu-22.04-server-cloudimg-amd64.img"
+      # Optional:
+      # secretRef:
+      #   name: my-http-auth-secret # Secret for basic authentication
+      # certConfigMapRef:
+      # ConfigMap containing custom CA certificates
+      #   name: my-custom-certs
+  contentType: kubevirt # Recommended for VM disk images
